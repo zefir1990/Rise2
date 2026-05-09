@@ -68,6 +68,12 @@ export class SwiftTranspiler implements AbstractTranspiler {
         // Math.sqrt(x) -> (x).squareRoot()
         result = result.replace(/Math\.sqrt\((.*)\)/g, '($1).squareRoot()');
 
+        // String interpolation: `... ${x} ...` -> "... \(x) ..."
+        // Replace ${...} with \(...)
+        result = result.replace(/\$\{(.*?)\}/g, '\\($1)');
+        // Replace backticks with double quotes
+        result = result.replace(/`(.*?)`/g, '"$1"');
+
         // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
         result = result.replace(/\(\s*\{(.*)\}\s*\)/g, '($1)');
 
