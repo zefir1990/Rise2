@@ -65,6 +65,9 @@ export class SwiftTranspiler implements AbstractTranspiler {
         // Comparison operators: === -> ==
         result = result.replace(/===/g, '==');
 
+        // Math.sqrt(x) -> (x).squareRoot()
+        result = result.replace(/Math\.sqrt\((.*)\)/g, '($1).squareRoot()');
+
         // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
         result = result.replace(/\(\s*\{(.*)\}\s*\)/g, '($1)');
 
