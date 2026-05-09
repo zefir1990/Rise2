@@ -1,5 +1,5 @@
-import * as fs from 'fs';
 import { NullTranspiler } from './NullTranspiler';
+
 import { AbstractTranspiler } from './AbstractTranspiler';
 import { SwiftTranspiler } from './SwiftTranspiler';
 
@@ -32,16 +32,13 @@ function main() {
     }
 
     try {
-        const data = fs.readFileSync(inputPath, 'utf8');
-        const lines = data.split('\n');
-        const transpiledLines = lines.map(line => transpiler.transpile(line)).filter(line => line !== '__SKIP_LINE__');
-        const transpiledData = transpiledLines.join('\n');
-        fs.writeFileSync(outputPath, transpiledData, 'utf8');
+        transpiler.transpileFile(inputPath, outputPath);
         console.log(`Successfully processed ${inputPath} -> ${outputPath} [${targetLanguage}]`);
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
         process.exit(1);
     }
 }
+
 
 main();
