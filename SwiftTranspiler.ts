@@ -89,8 +89,9 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/`(.*?)`/g, '"$1"');
 
         // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
-        result = result.replace(/\(\s*\{/g, '(');
-        result = result.replace(/\}\s*\)/g, ')');
+        result = result.replace(/(\(|\,)\s*\{/g, '$1 ');
+        result = result.replace(/\}\s*(\)|\,)/g, ' $1');
+
 
         // Clean up 'var' from parameters (Swift doesn't allow 'var' in function signatures)
         result = result.replace(/(\(|\,)\s*var\s+/g, '$1 ');
