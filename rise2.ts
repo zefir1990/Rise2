@@ -2,6 +2,8 @@ import { NullTranspiler } from './NullTranspiler';
 
 import { AbstractTranspiler } from './AbstractTranspiler';
 import { SwiftTranspiler } from './SwiftTranspiler';
+import { RustTranspiler } from './RustTranspiler';
+
 
 function main() {
     const args = process.argv.slice(2);
@@ -27,9 +29,12 @@ function main() {
 
     if (targetLanguage.toLowerCase() === 'swift') {
         transpiler = new SwiftTranspiler();
+    } else if (targetLanguage.toLowerCase() === 'rust') {
+        transpiler = new RustTranspiler();
     } else {
         transpiler = new NullTranspiler();
     }
+
 
     try {
         transpiler.transpileFile(inputPath, outputPath);
