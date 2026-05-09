@@ -49,6 +49,11 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/(\w+):\s*float/g, 'var $1: Float');
         result = result.replace(/(\w+):\s*int/g, 'var $1: Int');
 
+        // Parameter/Property Type Conversions
+        result = result.replace(/:\s*string\b/g, ': String');
+        result = result.replace(/:\s*boolean\b/g, ': Bool');
+        result = result.replace(/\(\)\s*=>\s*void/g, '(() -> void)');
+
         // Return type conversions
         result = result.replace(/->\s*float/g, '-> Float');
         result = result.replace(/->\s*int/g, '-> Int');
@@ -78,7 +83,8 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/`(.*?)`/g, '"$1"');
 
         // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
-        result = result.replace(/\(\s*\{(.*)\}\s*\)/g, '($1)');
+        result = result.replace(/\(\s*\{/g, '(');
+        result = result.replace(/\}\s*\)/g, ')');
 
         // Clean up 'var' from parameters (Swift doesn't allow 'var' in function signatures)
         result = result.replace(/(\(|\,)\s*var\s+/g, '$1 ');
