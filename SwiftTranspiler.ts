@@ -34,7 +34,7 @@ export class SwiftTranspiler implements AbstractTranspiler {
 
         // Instance methods (rough match for word followed by parentheses and space/bracket)
         // We exclude keywords like if, for, while, switch, constructor (already handled), return
-        const methodRegex = /^(\s*)(?!(if|for|while|switch|return|init|constructor|static|class|export|const|let|var|type|import))(\w+)\s*\((.*)\)/g;
+        const methodRegex = /^(\s*)(?!(if|for|while|switch|return|init|constructor|static|class|export|const|let|var|type|import)\b)(\w+)\s*\((.*)\)/g;
         result = result.replace(methodRegex, '$1func $3($4)');
 
         // Return types: ): Type -> ) -> Type
@@ -52,13 +52,14 @@ export class SwiftTranspiler implements AbstractTranspiler {
         // Parameter/Property Type Conversions
         result = result.replace(/:\s*string\b/g, ': String');
         result = result.replace(/:\s*boolean\b/g, ': Bool');
-        result = result.replace(/\(\)\s*=>\s*void/g, '(() -> void)');
+        result = result.replace(/\(\)\s*=>\s*void/g, '(() -> Void)');
 
         // Return type conversions
         result = result.replace(/->\s*float/g, '-> Float');
         result = result.replace(/->\s*int/g, '-> Int');
         result = result.replace(/->\s*string/g, '-> String');
         result = result.replace(/->\s*boolean/g, '-> Bool');
+        result = result.replace(/->\s*void\b/g, '-> Void');
 
         // Array Types: Type[] -> [Type]
         result = result.replace(/\b([a-zA-Z0-9_]+)\[\]/g, '[$1]');
