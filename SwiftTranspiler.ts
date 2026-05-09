@@ -37,6 +37,9 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/\bconst\b/g, 'let');
         result = result.replace(/\blet\b/g, 'var');
 
+        // Swift has no 'new' keyword
+        result = result.replace(/\bnew\s+/g, '');
+
         // Remove semicolons at end of lines
         result = result.replace(/;$/g, '');
 
