@@ -40,6 +40,12 @@ export class SwiftTranspiler implements AbstractTranspiler {
         // Swift has no 'new' keyword
         result = result.replace(/\bnew\s+/g, '');
 
+        // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
+        result = result.replace(/\(\s*\{(.*)\}\s*\)/g, '($1)');
+
+        // Clean up 'var' from parameters (Swift doesn't allow 'var' in function signatures)
+        result = result.replace(/(\(|\,)\s*var\s+/g, '$1 ');
+
         // Remove semicolons at end of lines
         result = result.replace(/;$/g, '');
 
