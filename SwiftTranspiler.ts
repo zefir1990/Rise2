@@ -60,6 +60,9 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/->\s*string/g, '-> String');
         result = result.replace(/->\s*boolean/g, '-> Bool');
 
+        // Array Types: Type[] -> [Type]
+        result = result.replace(/\b([a-zA-Z0-9_]+)\[\]/g, '[$1]');
+
         // this -> self
         result = result.replace(/\bthis\b/g, 'self');
 
