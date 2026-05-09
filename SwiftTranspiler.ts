@@ -56,8 +56,8 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/\bthis\b/g, 'self');
 
         // const/let -> let/var
-        result = result.replace(/\bconst\b/g, 'let');
         result = result.replace(/\blet\b/g, 'var');
+        result = result.replace(/\bconst\b/g, 'let');
 
         // Swift has no 'new' keyword
         result = result.replace(/\bnew\s+/g, '');
