@@ -20,8 +20,14 @@ export class SwiftTranspiler implements AbstractTranspiler {
 
         // Instance methods (rough match for word followed by parentheses and space/bracket)
         // We exclude keywords like if, for, while, switch, constructor (already handled), return
-        const methodRegex = /^(\s*)(?!(if|for|while|switch|return|init|constructor|static|class|export|const|let|var|type|import))(\w+)\s*\((.*)\)\s*{/g;
-        result = result.replace(methodRegex, '$1func $3($4) {');
+        const methodRegex = /^(\s*)(?!(if|for|while|switch|return|init|constructor|static|class|export|const|let|var|type|import))(\w+)\s*\((.*)\)/g;
+        result = result.replace(methodRegex, '$1func $3($4)');
+
+        // Return types: ): Type -> ) -> Type
+        // Handle void first
+        result = result.replace(/\)\s*:\s*void/g, ')');
+        // General return type
+        result = result.replace(/\)\s*:\s*(\w+)/g, ') -> $1');
 
         // Properties and Variables
         // TypeScript property: name: type; -> Swift: var name: type
@@ -29,6 +35,12 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/(\w+):\s*float/g, 'var $1: Float');
         result = result.replace(/(\w+):\s*int/g, 'var $1: Int');
         result = result.replace(/(\w+):\s*number/g, 'var $1: Double');
+
+        // Return type conversions
+        result = result.replace(/->\s*float/g, '-> Float');
+        result = result.replace(/->\s*int/g, '-> Int');
+        result = result.replace(/->\s*string/g, '-> String');
+        result = result.replace(/->\s*boolean/g, '-> Bool');
 
         // this -> self
         result = result.replace(/this\./g, 'self.');
