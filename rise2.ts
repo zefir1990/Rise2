@@ -26,7 +26,9 @@ function main() {
 
     try {
         const data = fs.readFileSync(inputPath, 'utf8');
-        const transpiledData = transpiler.transpile(data);
+        const lines = data.split('\n');
+        const transpiledLines = lines.map(line => transpiler.transpile(line));
+        const transpiledData = transpiledLines.join('\n');
         fs.writeFileSync(outputPath, transpiledData, 'utf8');
         console.log(`Successfully processed ${inputPath} -> ${outputPath} [${targetLanguage}]`);
     } catch (error: any) {
