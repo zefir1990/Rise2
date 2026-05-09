@@ -53,7 +53,7 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/->\s*boolean/g, '-> Bool');
 
         // this -> self
-        result = result.replace(/this\./g, 'self.');
+        result = result.replace(/\bthis\b/g, 'self');
 
         // const/let -> let/var
         result = result.replace(/\bconst\b/g, 'let');
@@ -61,6 +61,9 @@ export class SwiftTranspiler implements AbstractTranspiler {
 
         // Swift has no 'new' keyword
         result = result.replace(/\bnew\s+/g, '');
+
+        // Comparison operators: === -> ==
+        result = result.replace(/===/g, '==');
 
         // Remove curly braces from inside parentheses (object literals/destructuring to named arguments)
         result = result.replace(/\(\s*\{(.*)\}\s*\)/g, '($1)');
