@@ -1,0 +1,24 @@
+{
+  "name": "rise2",
+  "version": "1.0.0",
+  "description": "Rise2 transpiler first language",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zefir1990/Rise2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zefir1990/Rise2/issues"
+  },
+  "homepage": "https://github.com/zefir1990/Rise2#readme",
+  "devDependencies": {
+    "@types/node": "^25.6.2"
+  }
+}

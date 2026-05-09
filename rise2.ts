@@ -1,4 +1,6 @@
 import * as fs from 'fs';
+import { NullTranspiler } from './NullTranspiler';
+import { AbstractTranspiler } from './AbstractTranspiler';
 
 function main() {
     const args = process.argv.slice(2);
@@ -20,9 +22,12 @@ function main() {
         process.exit(1);
     }
 
+    const transpiler: AbstractTranspiler = new NullTranspiler();
+
     try {
         const data = fs.readFileSync(inputPath, 'utf8');
-        fs.writeFileSync(outputPath, data, 'utf8');
+        const transpiledData = transpiler.transpile(data);
+        fs.writeFileSync(outputPath, transpiledData, 'utf8');
         console.log(`Successfully processed ${inputPath} -> ${outputPath} [${targetLanguage}]`);
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
