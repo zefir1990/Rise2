@@ -1,7 +1,19 @@
 import { AbstractTranspiler } from './AbstractTranspiler';
 
 export class SwiftTranspiler implements AbstractTranspiler {
+    private skipNext: boolean = false;
+
     transpile(line: string): string {
+        if (this.skipNext) {
+            this.skipNext = false;
+            return '__SKIP_LINE__';
+        }
+
+        if (line.trim() === '// Rise2: ignore-next-line') {
+            this.skipNext = true;
+            return '__SKIP_LINE__';
+        }
+
         let result = line;
 
         // Type Aliases
