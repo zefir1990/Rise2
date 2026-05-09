@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { NullTranspiler } from './NullTranspiler';
 import { AbstractTranspiler } from './AbstractTranspiler';
+import { SwiftTranspiler } from './SwiftTranspiler';
 
 function main() {
     const args = process.argv.slice(2);
@@ -22,7 +23,13 @@ function main() {
         process.exit(1);
     }
 
-    const transpiler: AbstractTranspiler = new NullTranspiler();
+    let transpiler: AbstractTranspiler;
+
+    if (targetLanguage.toLowerCase() === 'swift') {
+        transpiler = new SwiftTranspiler();
+    } else {
+        transpiler = new NullTranspiler();
+    }
 
     try {
         const data = fs.readFileSync(inputPath, 'utf8');
