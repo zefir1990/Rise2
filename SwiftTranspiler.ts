@@ -5,7 +5,6 @@ export class SwiftTranspiler implements AbstractTranspiler {
         let result = line;
 
         // Type Aliases
-        result = result.replace(/type\s+(\w+)\s*=\s*number/g, 'typealias $1 = Double');
         result = result.replace(/type\s+(\w+)\s*=\s*float/g, 'typealias $1 = Float');
         result = result.replace(/type\s+(\w+)\s*=\s*int/g, 'typealias $1 = Int');
 
@@ -34,7 +33,6 @@ export class SwiftTranspiler implements AbstractTranspiler {
         // This is tricky. Let's handle common patterns.
         result = result.replace(/(\w+):\s*float/g, 'var $1: Float');
         result = result.replace(/(\w+):\s*int/g, 'var $1: Int');
-        result = result.replace(/(\w+):\s*number/g, 'var $1: Double');
 
         // Return type conversions
         result = result.replace(/->\s*float/g, '-> Float');
