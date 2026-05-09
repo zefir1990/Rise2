@@ -20,8 +20,11 @@ export class SwiftTranspiler implements AbstractTranspiler {
         result = result.replace(/type\s+(\w+)\s*=\s*float/g, 'typealias $1 = Float');
         result = result.replace(/type\s+(\w+)\s*=\s*int/g, 'typealias $1 = Int');
 
-        // Classes
-        result = result.replace(/export\s+class\s+(\w+)/g, 'class $1');
+        // Remove export keyword
+        result = result.replace(/\bexport\s+/g, '');
+
+        // Interface to protocol
+        result = result.replace(/\binterface\b/g, 'protocol');
 
         // Constructor to init
         result = result.replace(/constructor\s*\((.*)\)/g, 'init($1)');
